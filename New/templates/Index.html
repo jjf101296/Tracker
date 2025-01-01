@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Availability Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .logo {
+            width: 150px;  /* Adjust the size of the logo */
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .confirmation {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Section -->
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Company Logo" class="logo">
+
+    <h1>Employee Availability Tracker</h1>
+
+    {% if confirmation %}
+    <div class="confirmation">
+        <strong>Success!</strong> Availability has been recorded.
+    </div>
+    {% endif %}
+
+    <form action="/submit" method="POST">
+        <label for="employee_name">Employee Name:</label>
+        <input type="text" id="employee_name" name="employee_name" required><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="time_slot">Time Slot:</label>
+        <input type="text" id="time_slot" name="time_slot" required><br><br>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
+            <option value="On Leave">On Leave</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Availability Logs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in availability_log %}
+                <tr>
+                    <td>{{ entry.employee_name }}</td>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.time_slot }}</td>
+                    <td>{{ entry.status }}</td>
+                    <td>{{ entry.timestamp }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
